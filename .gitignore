@@ -104,3 +104,12 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# Hand-authored core verification project
+!Tools/CoreChecks/CoreChecks.csproj
+**/bin/
+**/obj/
+.codex/
+.agents/
+.env
+.env.*
