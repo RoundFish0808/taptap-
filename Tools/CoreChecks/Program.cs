@@ -29,6 +29,29 @@ internal static class Program
         using (JsonDocument manifest = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "Packages", "manifest.json"))))
             Check(UniqueJsonKeys(manifest.RootElement), "Unity manifest is valid JSON with no duplicated package keys");
         var g = new GameSession();
+        var fixedPath = FixedLoopPath.Create(10, 20, 2, 5, 7, 14);
+        Check(fixedPath.Count == 28 && new HashSet<Cell>(fixedPath).Count == 28,
+            "10 by 20 grid main loop has 28 distinct cells without duplicate camp");
+        Check(fixedPath[0].Equals(new Cell(2, 5)) && fixedPath[9].Equals(new Cell(2, 14)) &&
+            fixedPath[14].Equals(new Cell(7, 14)) && fixedPath[23].Equals(new Cell(7, 5)),
+            "Fixed loop follows up, right, down, left from bottom left camp");
+        bool continuous = true;
+        for (int i = 0; i < fixedPath.Count; i++)
+        {
+            Cell a = fixedPath[i], b = fixedPath[(i + 1) % fixedPath.Count];
+            continuous &= Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y) == 1;
+            continuous &= a.X >= 0 && a.X < 10 && a.Y >= 0 && a.Y < 20;
+        }
+        Check(continuous, "Every fixed loop step including last to camp is adjacent and inside grid");
+        bool invalidBoundsRejected = false;
+        try { FixedLoopPath.Create(10, 20, 2, 5, 10, 14); }
+        catch (ArgumentException) { invalidBoundsRejected = true; }
+        Check(invalidBoundsRejected, "Fixed loop rejects roads outside the grid");
+        var landscapePath = FixedLoopPath.Create(20, 10, 5, 2, 14, 7);
+        Check(landscapePath.Count == 28 && landscapePath[0].Equals(new Cell(5, 2)) &&
+            landscapePath[5].Equals(new Cell(5, 7)) && landscapePath[14].Equals(new Cell(14, 7)) &&
+            landscapePath[19].Equals(new Cell(14, 2)),
+            "Landscape 20 by 10 map preserves up-right-down-left main loop");
         Check(g.Route.Valid && g.Route.Path.Count == 16, "Initial stable loop returns to camp");
         float health = g.Health; Cell current = g.Current;
         g.ManualPause = true; g.Tick(15);
