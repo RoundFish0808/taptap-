@@ -12,5 +12,6 @@
   <ItemGroup>
     <Compile Include="../../Assets/Scripts/Core/*.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="PatrolChecks.cs" />
   </ItemGroup>
 </Project>

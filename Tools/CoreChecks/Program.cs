@@ -19,6 +19,7 @@ internal static class Program
     }
     private static void Run()
     {
+        PatrolChecks.Run(Check);
         string root = AppContext.BaseDirectory;
         while (!File.Exists(Path.Combine(root, "Packages", "manifest.json")))
         {

@@ -14,10 +14,7 @@ namespace ReverseDefense.Editor
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
-            EditorGUILayout.HelpBox("修改网格或道路参数后，点击下方按钮并保存。批量换图请使用 Grid Map View 的地图外观配置；特殊格子可勾选独立外观。", MessageType.Info);
-            using (new EditorGUI.DisabledScope(EditorApplication.isPlaying))
-                if (GUILayout.Button("生成/更新 UGUI 地图"))
-                    GamePlaySceneEditor.Build((FixedLoopGamePlay)target);
+            EditorGUILayout.HelpBox("在 Grid Map View 绑定场景人物与 Road Nodes；在此绑定开始、暂停按钮及回合文字。绑定 Monster Prefab 和 Monster Root 后会在道路随机生怪，遇怪自动战斗。共10回合；暂停后点击开始继续。无需配置人物状态机。", MessageType.Info);
         }
     }
 
@@ -151,3 +148,4 @@ namespace ReverseDefense.Editor
         }
     }
 }
+
